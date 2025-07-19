@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "task": "Setup project Django",
+    "done": true
+  },
+  {
+    "id": 2,
+    "task": "Tampilkan data dari file",
+    "done": false
+  },
+  {
+    "id": 3,
+    "task": "Buat fitur 'Add'",
+    "done": false
+  }
+]
