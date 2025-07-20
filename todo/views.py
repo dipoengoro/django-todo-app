@@ -38,3 +38,42 @@ def add_todo(request):
     # 5. Redirect kembali ke halaman utama
     return redirect(reverse('todo_list'))
 
+def delete_todo(request, todo_id):
+    with open('db.json', 'r') as f:
+        todos = json.load(f)
+
+        todos_to_keep = [item for item in todos if item['id'] != todo_id]
+
+        with open('db.json', 'w') as f:
+            json.dump(todos_to_keep, f, indent=2)
+
+        return redirect(reverse('todo_list'))
+
+def edit_todo(request, todo_id):
+    with open('db.json', 'r') as f:
+        todos = json.load(f)
+
+    todo_to_edit = None
+    todo_index = -1
+    for i, item in enumerate(todos):
+        if item['id'] == todo_id:
+            todo_to_edit = item
+            todo_index = i
+            break
+
+    if not todo_to_edit:
+        return redirect(reverse('todo_list'))
+
+    if request.method == 'POST':
+        task_name = request.POST.get('task_name')
+        task_done = request.POST.get('task_done') == 'on'
+
+        todos[todo_index]['task'] = task_name
+        todos[todo_index]['done'] = task_done
+
+        with open('db.json', 'w') as f:
+            json.dump(todos, f, indent=2)
+
+        return redirect(reverse('todo_list'))
+
+    return render(request, 'todo/edit.html', {'todo': todo_to_edit})

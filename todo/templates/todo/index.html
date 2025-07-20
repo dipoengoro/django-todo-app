@@ -54,6 +54,10 @@
             {% for item in todos %}
                 <li class="{% if item.done %}done{% endif %}">
                     {{ item.task }}
+                    <span style="float: right;">
+                        <a href="{% url 'edit_todo' item.id %}" style="margin-right: 10px">Edit</a>
+                        <a href="{% url 'delete_todo' item.id %}" style="color: red; font-weight: bold">Hapus</a>
+                    </span>
                 </li>
             {% endfor %}
         </ul>
