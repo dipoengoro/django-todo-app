@@ -77,3 +77,17 @@ def edit_todo(request, todo_id):
         return redirect(reverse('todo_list'))
 
     return render(request, 'todo/edit.html', {'todo': todo_to_edit})
+
+def toggle_done(request, todo_id):
+    if request.method == 'POST':
+        with open('db.json', 'r') as f:
+            todos = json.load(f)
+
+        for item in todos:
+            if item['id'] == todo_id:
+                item['done'] = not item['done']
+                break
+        with open('db.json', 'w') as f:
+            json.dump(todos, f, indent=2)
+
+    return redirect(reverse('todo_list'))
