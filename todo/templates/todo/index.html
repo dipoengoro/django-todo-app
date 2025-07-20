@@ -1,71 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Django To-Do App</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f4f4f9;
-            text-align: center;
-        }
+{% extends 'todo/base.html' %}
 
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+{% block title %}My To-Do App{% endblock %}
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        li.done span {
-            text-decoration: line-through;
-            color: #888;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .task-view {
-            display: flex;
-            align-items: center;
-        }
-
-        .task-edit-form {
-            display: none;
-        }
-
-        .delete-btn {
-            border: none;
-            background: none;
-            color: red;
-            cursor: pointer;
-            font-size: 22px;
-            font-weight: bold;
-            line-height: 1;
-            padding: 0 5px;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
+{% block content %}
     <h1>📝 My Django To-Do List</h1>
 
     <form action="{% url 'add_todo' %}" method="post" style="margin-bottom: 20px;">
@@ -78,12 +15,12 @@
             <li class="{% if item.done %}done{% endif %}">
                 <div id="view-{{ item.id }}" class="task-view">
 
-                    <form action="{% url 'toggle_done' item.id %}" method="post" style="margin: 0">
+                    <form action="{% url 'toggle_done' item.id %}" method="post" style="margin: 0;">
                         {% csrf_token %}
                         <input type="checkbox" {% if item.done %}checked{% endif %} onchange="this.form.submit()">
                     </form>
 
-                    <span onclick="toggleEdit({{ item.id }})"
+                    <span onclick="toggleEdit({{ item.id }})" class="task-text"
                           style="flex-grow: 1; margin: 0 10px; cursor: pointer; text-align: left;">
                         {{ item.task }}
                     </span>
@@ -106,8 +43,9 @@
             </li>
         {% endfor %}
     </ul>
-</div>
+{% endblock %}
 
+{% block scripts %}
 <script>
     function toggleEdit(todoId) {
         const viewElement = document.getElementById('view-' + todoId);
@@ -128,7 +66,6 @@
     function handleEditSubmit(todoId) {
         const editForm = document.getElementById('edit-form-' + todoId);
         const editInput = editForm.querySelector('input[type="text"]');
-
         const originalValue = editInput.getAttribute('data-original-value');
         const currentValue = editInput.value;
 
@@ -139,5 +76,4 @@
         }
     }
 </script>
-</body>
-</html>
+{% endblock %}
