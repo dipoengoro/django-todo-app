@@ -2,16 +2,19 @@
   {
     "id": 1,
     "task": "Setup project Django",
-    "done": true
+    "done": true,
+    "is_deleted": false
   },
   {
     "id": 2,
     "task": "Tampilkan data dari file",
-    "done": false
+    "done": false,
+    "is_deleted": false
   },
   {
     "id": 3,
     "task": "Buat fitur 'Add'",
-    "done": false
+    "done": false,
+    "is_deleted": false
   }
 ]
