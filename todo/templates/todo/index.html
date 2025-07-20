@@ -13,26 +13,26 @@
     <ul>
         {% for item in todos %}
             <li class="{% if item.done %}done{% endif %}">
-                <div id="view-{{ item.id }}" class="task-view">
+                <div id="view-{{ item.pk }}" class="task-view">
 
-                    <form action="{% url 'toggle_done' item.id %}" method="post" class="inline-form">
+                    <form action="{% url 'toggle_done' item.pk %}" method="post" class="inline-form">
                         {% csrf_token %}
                         <input type="checkbox" {% if item.done %}checked{% endif %} onchange="this.form.submit()">
                     </form>
 
-                    <span onclick="toggleEdit('{{ item.id }}')" class="task-text">{{ item.task }}</span>
+                    <span onclick="toggleEdit({{ item.pk }})" class="task-text">{{ item.title }}</span>
 
-                    <form action="{% url 'delete_todo' item.id %}" method="post" class="inline-form">
+                    <form action="{% url 'delete_todo' item.pk %}" method="post" class="inline-form">
                         {% csrf_token %}
                         <button type="submit" class="delete-btn">&times;</button>
                     </form>
                 </div>
 
-                <form id="edit-form-{{ item.id }}" class="task-edit-form" action="{% url 'edit_todo' item.id %}"
+                <form id="edit-form-{{ item.pk }}" class="task-edit-form" action="{% url 'edit_todo' item.pk %}"
                       method="post">
                     {% csrf_token %}
-                    <input type="text" name="task_name" value="{{ item.task }}" data-original-value="{{ item.task }}"
-                           onblur="handleEditSubmit('{{ item.id }}')"
+                    <input type="text" name="task_name" value="{{ item.title }}" data-original-value="{{ item.title }}"
+                           onblur="handleEditSubmit({{ item.pk }})"
                            class="edit-form-input" required>
                 </form>
 
