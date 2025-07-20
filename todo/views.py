@@ -1,4 +1,5 @@
 import json
+import uuid
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -24,7 +25,7 @@ class TodoManager:
 
     def add(self, task_name):
         todos = self._read_todos()
-        new_id = max(item['id'] for item in todos) + 1 if todos else 1
+        new_id = str(uuid.uuid4())
         new_todo = {
             'id': new_id,
             'task': task_name,
@@ -37,7 +38,7 @@ class TodoManager:
     def toggle(self, todo_id):
         todos = self._read_todos()
         for item in todos:
-            if item['id'] == todo_id:
+            if str(item['id']) == str(todo_id):
                 item['done'] = not item['done']
                 break
         self._write_todos(todos)
@@ -45,7 +46,7 @@ class TodoManager:
     def update(self, todo_id, new_task):
         todos = self._read_todos()
         for item in todos:
-            if item['id'] == todo_id:
+            if str(item['id']) == str(todo_id):
                 item['task'] = new_task
                 break
         self._write_todos(todos)
@@ -53,7 +54,7 @@ class TodoManager:
     def soft_delete(self, todo_id):
         todos = self._read_todos()
         for item in todos:
-            if item['id'] == todo_id:
+            if str(item['id']) == str(todo_id):
                 item['is_deleted'] = True
                 break
         self._write_todos(todos)
